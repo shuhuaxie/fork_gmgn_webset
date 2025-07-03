@@ -4,6 +4,7 @@ import 'clanker_tabs.dart';
 import 'time_tabs.dart';
 import 'filter_bar.dart';
 import 'top_nav_bar.dart';
+import 'login_dialog.dart';
 
 class TokenBoardPage extends StatefulWidget {
   const TokenBoardPage({Key? key}) : super(key: key);
@@ -64,7 +65,14 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
             children: [
               _buildTopBar(),
               const SizedBox(height: 2),
-              TopNavBar(),
+              TopNavBar(
+                onLogin: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const LoginDialog(),
+                  );
+                },
+              ),
               const SizedBox(height: 2),
               NavTabs(
                 selectedIndex: navTabIndex,
