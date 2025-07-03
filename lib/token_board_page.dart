@@ -8,6 +8,7 @@ import 'login_dialog.dart';
 import 'mock_json.dart' as mock;
 import 'dart:convert';
 import 'token_item.dart';
+import 'register_dialog.dart';
 
 class TokenBoardPage extends StatefulWidget {
   const TokenBoardPage({super.key});
@@ -51,6 +52,12 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
                   showDialog(
                     context: context,
                     builder: (context) => const LoginDialog(),
+                  );
+                },
+                onRegister: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const RegisterDialog(),
                   );
                 },
               ),
