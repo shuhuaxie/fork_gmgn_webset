@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'global.dart';
+import 'wallet_menu.dart';
 
 class TopNavBar extends StatelessWidget {
   final VoidCallback? onLogin;
@@ -91,26 +92,7 @@ class TopNavBar extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: loggedIn
-                        ? Container(
-                            height: 44,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF23262F),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(Icons.wallet, color: Color(0xFFB0B3BC), size: 22),
-                                SizedBox(width: 8),
-                                Icon(Icons.currency_bitcoin, color: Color(0xFF00C2FF), size: 18),
-                                SizedBox(width: 2),
-                                Text('0', style: TextStyle(color: Color(0xFF00C2FF), fontSize: 16, fontWeight: FontWeight.w600)),
-                                SizedBox(width: 8),
-                                Icon(Icons.keyboard_arrow_down, color: Color(0xFFB0B3BC), size: 22),
-                              ],
-                            ),
-                          )
+                        ? _WalletMenuButton()
                         : Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -166,6 +148,90 @@ class TopNavBar extends StatelessWidget {
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _WalletMenuButton extends StatefulWidget {
+  const _WalletMenuButton({Key? key}) : super(key: key);
+
+  @override
+  State<_WalletMenuButton> createState() => _WalletMenuButtonState();
+}
+
+class _WalletMenuButtonState extends State<_WalletMenuButton> {
+  OverlayEntry? _overlayEntry;
+  final LayerLink _layerLink = LayerLink();
+  bool _menuOpen = false;
+
+  void _showMenu() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        width: 280,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: const Offset(-180, 56),
+          child: WalletMenu(
+            onWalletTap: () {
+              _hideMenu();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('点击了我的钱包')),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+    Overlay.of(context, rootOverlay: true).insert(_overlayEntry!);
+    setState(() => _menuOpen = true);
+  }
+
+  void _hideMenu() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+    setState(() => _menuOpen = false);
+  }
+
+  @override
+  void dispose() {
+    _hideMenu();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: GestureDetector(
+        onTap: () {
+          if (_menuOpen) {
+            _hideMenu();
+          } else {
+            _showMenu();
+          }
+        },
+        child: Container(
+          height: 44,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF23262F),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.wallet, color: Color(0xFFB0B3BC), size: 22),
+              const SizedBox(width: 8),
+              const Icon(Icons.currency_bitcoin, color: Color(0xFF00C2FF), size: 18),
+              const SizedBox(width: 2),
+              const Text('0', style: TextStyle(color: Color(0xFF00C2FF), fontSize: 16, fontWeight: FontWeight.w600)),
+              const SizedBox(width: 8),
+              Icon(_menuOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: const Color(0xFFB0B3BC), size: 22),
+            ],
+          ),
         ),
       ),
     );
