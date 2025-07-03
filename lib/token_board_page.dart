@@ -12,6 +12,7 @@ import 'register_dialog.dart';
 import 'wallet_profile/wallet_profile_page.dart';
 import 'token_dashboard/token_dashboard_page.dart';
 import 'token_list_page.dart';
+import 'package:http/http.dart' as http;
 
 class TokenBoardPage extends StatefulWidget {
   const TokenBoardPage({super.key});
@@ -26,13 +27,29 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
   int timeTabIndex = 2;
   int mainContentType = 2; // 0: WalletProfilePage, 1: TokenDashboardPage, 2: TokenListPage
 
-  late final List<Token> tokenList;
+  late List<Token> tokenList = [];
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    final data = jsonDecode(mock.json)['data'] as List;
-    tokenList = data.map((e) => Token.fromJson(e)).toList();
+    _fetchTokenList();
+  }
+
+  Future<void> _fetchTokenList() async {
+    setState(() { _loading = true; });
+    final url = Uri.parse('https://m1.apifoxmock.com/m2/6706347-6416164-default/317465933');
+    final resp = await http.get(url);
+    if (resp.statusCode == 200) {
+      final jsonMap = jsonDecode(resp.body);
+      final data = jsonMap['data'] as List;
+      setState(() {
+        tokenList = data.map((e) => Token.fromJson(e)).toList();
+        _loading = false;
+      });
+    } else {
+      setState(() { _loading = false; });
+    }
   }
 
   @override
@@ -76,7 +93,9 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
                 onTabSelected: (i) => setState(() => navTabIndex = i),
               ),
               const SizedBox(height: 2),
-              if (mainContentType == 0)
+              if (_loading)
+                const Expanded(child: Center(child: CircularProgressIndicator()))
+              else if (mainContentType == 0)
                 Expanded(child: WalletProfilePage())
               else if (mainContentType == 1)
                 Expanded(
