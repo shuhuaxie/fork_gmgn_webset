@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'global.dart';
 
 class RegisterDialog extends StatelessWidget {
   const RegisterDialog({Key? key}) : super(key: key);
@@ -95,7 +96,17 @@ class RegisterDialog extends StatelessWidget {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Global.isLoggedIn.value = true;
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('注册成功', style: TextStyle(color: Colors.white)),
+                        backgroundColor: Color(0xFF23262F),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF7CF7D6),
                     elevation: 0,
