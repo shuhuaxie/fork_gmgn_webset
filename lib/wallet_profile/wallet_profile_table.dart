@@ -42,83 +42,155 @@ class WalletProfileTable extends StatelessWidget {
       },
     ];
 
+    final columns = [
+      '未实现利润',
+      '已实现利润',
+      '总利润',
+      '余额 USD',
+      '持仓%',
+      '总买入/平均',
+      '总卖出/平均',
+      '30D交易数',
+      '操作',
+    ];
+
     return Container(
       width: 390,
       decoration: BoxDecoration(
         color: const Color(0xFF23262F),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
+      child: Stack(
         children: [
-          // 表头
-          Container(
-            height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: const BoxDecoration(
-              color: Color(0xFF181A20),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            child: Row(
-              children: const [
-                Expanded(flex: 3, child: Text('币种 / 最后活跃', style: TextStyle(color: Color(0xFFB0B3BC), fontSize: 13, fontWeight: FontWeight.w600))),
-                Expanded(flex: 2, child: Text('未实现利润', style: TextStyle(color: Color(0xFFB0B3BC), fontSize: 13, fontWeight: FontWeight.w600))),
-                Expanded(flex: 2, child: Text('已实现利润', style: TextStyle(color: Color(0xFFB0B3BC), fontSize: 13, fontWeight: FontWeight.w600))),
-                Expanded(flex: 2, child: Text('总利润', style: TextStyle(color: Color(0xFFB0B3BC), fontSize: 13, fontWeight: FontWeight.w600))),
+          // 固定首列
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _TableHeaderCell('币种 / 最后活跃', isFirst: true),
+                Container(
+                  height: 1,
+                  width: 120,
+                  margin: const EdgeInsets.symmetric(horizontal: 0),
+                  color: const Color(0xFF23262F),
+                ),
+                ...rows.map((row) => _TableFirstCell(row: row)).toList(),
               ],
             ),
           ),
-          // 分割线
-          Container(
-            height: 1,
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            color: const Color(0xFF23262F),
+          // 可滚动部分
+          Padding(
+            padding: const EdgeInsets.only(left: 120),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: List.generate(columns.length, (i) => _TableHeaderCell(columns[i])),
+                  ),
+                  Container(
+                    height: 1,
+                    width: columns.length * 100,
+                    color: const Color(0xFF23262F),
+                  ),
+                  ...rows.map((row) => Row(
+                    children: [
+                      _TableCell(row['unrealized'] as String, color: row['unrealizedColor'] as Color),
+                      _TableCell(row['realized'] as String, color: row['realizedColor'] as Color),
+                      _TableCell(row['total'] as String, color: row['totalColor'] as Color),
+                      _TableCell('\$0'),
+                      _TableCell('100%'),
+                      _TableCell('\$0'),
+                      _TableCell('\$0'),
+                      _TableCell('0/0'),
+                      _TableCell('分享'),
+                    ],
+                  )),
+                ],
+              ),
+            ),
           ),
-          // 数据行
-          ...rows.map((row) => _WalletProfileTableRow(row: row)).toList(),
         ],
       ),
     );
   }
 }
 
-class _WalletProfileTableRow extends StatelessWidget {
-  final Map row;
-  const _WalletProfileTableRow({required this.row});
-
+class _TableHeaderCell extends StatelessWidget {
+  final String text;
+  final bool isFirst;
+  const _TableHeaderCell(this.text, {this.isFirst = false});
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: isFirst ? 120 : 100,
+      height: 40,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.symmetric(horizontal: isFirst ? 16 : 8),
+      decoration: isFirst
+          ? const BoxDecoration(
+              color: Color(0xFF181A20),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(16)),
+            )
+          : const BoxDecoration(
+              color: Color(0xFF181A20),
+            ),
+      child: Text(
+        text,
+        style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 13, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+}
+
+class _TableFirstCell extends StatelessWidget {
+  final Map row;
+  const _TableFirstCell({required this.row});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 120,
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: const BoxDecoration(
-        color: Color(0xFF23262F),
-      ),
+      alignment: Alignment.centerLeft,
       child: Row(
         children: [
-          // 币种+活跃
-          Expanded(
-            flex: 3,
-            child: Row(
-              children: [
-                Icon(row['icon'], color: Colors.white, size: 20),
-                const SizedBox(width: 8),
-                Text(row['name'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF181A20),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(row['lastActive'], style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 11)),
-                ),
-              ],
+          Icon(row['icon'], color: Colors.white, size: 20),
+          const SizedBox(width: 8),
+          Text(row['name'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+          const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: const Color(0xFF181A20),
+              borderRadius: BorderRadius.circular(6),
             ),
+            child: Text(row['lastActive'], style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 11)),
           ),
-          Expanded(flex: 2, child: Text(row['unrealized'], style: TextStyle(color: row['unrealizedColor'], fontWeight: FontWeight.w600, fontSize: 14))),
-          Expanded(flex: 2, child: Text(row['realized'], style: TextStyle(color: row['realizedColor'], fontWeight: FontWeight.w600, fontSize: 14))),
-          Expanded(flex: 2, child: Text(row['total'], style: TextStyle(color: row['totalColor'], fontWeight: FontWeight.w600, fontSize: 14))),
         ],
+      ),
+    );
+  }
+}
+
+class _TableCell extends StatelessWidget {
+  final String text;
+  final Color? color;
+  const _TableCell(this.text, {this.color});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100,
+      height: 48,
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Text(
+        text,
+        style: TextStyle(color: color ?? const Color(0xFFB0B3BC), fontSize: 14, fontWeight: FontWeight.w600),
       ),
     );
   }
