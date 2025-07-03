@@ -22,11 +22,6 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
   int clankerTabIndex = 0;
   int timeTabIndex = 2;
 
-  final List<String> tabs = [
-    '战场', '新币', '热门', '探索', '监控', '追踪', '持仓'
-  ];
-  final List<String> times = ['1m', '5m', '1h', '6h', '24h'];
-
   late final List<Token> tokenList;
 
   @override
