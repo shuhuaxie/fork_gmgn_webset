@@ -5,9 +5,12 @@ import 'time_tabs.dart';
 import 'filter_bar.dart';
 import 'top_nav_bar.dart';
 import 'login_dialog.dart';
+import 'mock_json.dart' as mock;
+import 'dart:convert';
+import 'token_item.dart';
 
 class TokenBoardPage extends StatefulWidget {
-  const TokenBoardPage({Key? key}) : super(key: key);
+  const TokenBoardPage({super.key});
 
   @override
   State<TokenBoardPage> createState() => _TokenBoardPageState();
@@ -23,36 +26,14 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
   ];
   final List<String> times = ['1m', '5m', '1h', '6h', '24h'];
 
-  final List<Map<String, dynamic>> tokens = [
-    {
-      'logo': Icons.qr_code,
-      'name': 'QRQ',
-      'address': '0x2b5...adf',
-      'volume': '571.2K',
-      'marketCap': '43.4M',
-      'holders': '76.3K',
-      'change': 48,
-    },
-    {
-      'logo': Icons.qr_code_2,
-      'name': 'CLANKEQ',
-      'address': '0x1bc...bcb',
-      'volume': '1.3M',
-      'marketCap': '42.4M',
-      'holders': '441.6K',
-      'change': 32,
-    },
-    {
-      'logo': Icons.emoji_emotions,
-      'name': 'FartcoQ',
-      'address': '0x2f6...2ae',
-      'volume': '1.7M',
-      'marketCap': '27.1M',
-      'holders': '87.5K',
-      'change': 22,
-    },
-    // ... 可继续添加更多假数据
-  ];
+  late final List<Token> tokenList;
+
+  @override
+  void initState() {
+    super.initState();
+    final data = jsonDecode(mock.json)['data'] as List;
+    tokenList = data.map((e) => Token.fromJson(e)).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +77,10 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
               SizedBox(
                 height: 400, // 可根据实际内容调整
                 child: ListView.separated(
-                  itemCount: tokens.length,
+                  itemCount: tokenList.length,
                   separatorBuilder: (_, __) => const Divider(color: Color(0xFF23262F), height: 1),
                   itemBuilder: (context, i) {
-                    final t = tokens[i];
-                    return _TokenRow(token: t, index: i);
+                    return TokenItem(token: tokenList[i]);
                   },
                 ),
               ),
@@ -224,113 +204,6 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
             child: Text('1h', style: TextStyle(color: Color(0xFFB0B3BC), fontSize: 14, fontWeight: FontWeight.w600)),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// 新增TokenRow组件，支持hover高亮
-class _TokenRow extends StatefulWidget {
-  final Map<String, dynamic> token;
-  final int index;
-  const _TokenRow({required this.token, required this.index});
-
-  @override
-  State<_TokenRow> createState() => _TokenRowState();
-}
-
-class _TokenRowState extends State<_TokenRow> {
-  bool _hovering = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = widget.token;
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovering = true),
-      onExit: (_) => setState(() => _hovering = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 120),
-        height: 56,
-        color: _hovering
-            ? const Color(0xFF23262F)
-            : (widget.index % 2 == 0 ? const Color(0xFF181A20) : const Color(0xFF1A1C23)),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(width: 8),
-            // 币种Logo和名称
-            Expanded(
-              flex: 3,
-              child: Row(
-                children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF23262F),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(t['logo'], color: Colors.white, size: 22),
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(t['name'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15, height: 1.1)),
-                      const SizedBox(height: 2),
-                      Text(t['address'], style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 12, height: 1.1)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            // 池子
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: Text(t['volume'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15)),
-              ),
-            ),
-            // 市值
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: Text(t['marketCap'], style: const TextStyle(color: Color(0xFFFFB800), fontWeight: FontWeight.w700, fontSize: 15)),
-              ),
-            ),
-            // 持有者
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: Text(t['holders'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15)),
-              ),
-            ),
-            // 1h涨跌幅
-            Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    '${t['change']}',
-                    style: TextStyle(
-                      color: t['change'] >= 0 ? const Color(0xFF00C076) : const Color(0xFFFF554A),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  const Icon(Icons.flash_on, color: Color(0xFF00C076), size: 18),
-                ],
-              ),
-            ),
-            const SizedBox(width: 32),
-          ],
-        ),
       ),
     );
   }
