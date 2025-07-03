@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'global.dart';
 import 'wallet_menu.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TopNavBar extends StatelessWidget {
   final VoidCallback? onLogin;
   final VoidCallback? onRegister;
   final VoidCallback? onWalletProfile;
-  const TopNavBar({Key? key, this.onLogin, this.onRegister, this.onWalletProfile}) : super(key: key);
+  final VoidCallback? onLogoTap;
+  const TopNavBar({Key? key, this.onLogin, this.onRegister, this.onWalletProfile, this.onLogoTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +24,15 @@ class TopNavBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // 青蛙头像
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      'https://img.gmgn.app/frog.png',
-                      fit: BoxFit.cover,
-                    ),
+                GestureDetector(
+                  onTap: () {
+                    if (onLogoTap != null) onLogoTap!();
+                  },
+                  child: SvgPicture.asset(
+                    'assets/logo_small2.svg',
+                    width: 32,
+                    height: 32,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 const SizedBox(width: 8),

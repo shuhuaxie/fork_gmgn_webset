@@ -64,6 +64,11 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
                     mainContentType = 0;
                   });
                 },
+                onLogoTap: () {
+                  setState(() {
+                    mainContentType = 2;
+                  });
+                },
               ),
               const SizedBox(height: 2),
               NavTabs(
@@ -111,77 +116,82 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
       child: Center(
         child: Container(
           width: 390,
-          height: 88,
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+          height: 68,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Logo
+              const SizedBox(width: 12),
               Container(
-                width: 56,
-                height: 56,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
                   child: Image.asset('assets/logo.png', fit: BoxFit.cover),
                 ),
               ),
-              const SizedBox(width: 16),
-              // App名称、描述
+              const SizedBox(width: 8),
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text(
-                      'GMGN App',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        letterSpacing: 0.2,
+                    Padding(
+                      padding: EdgeInsets.only(top: 12),
+                      child: Text(
+                        'GMGN App',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          height: 1.27,
+                          letterSpacing: 0.2,
+                        ),
                       ),
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      '更快发现，秒级交易',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFB0B3BC),
-                        letterSpacing: 0.1,
+                    Padding(
+                      padding: EdgeInsets.only(top: 2, bottom: 12),
+                      child: Text(
+                        '更快发现，秒级交易',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF8E929D),
+                          height: 1.27,
+                          letterSpacing: 0.1,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 16),
-              // 立即体验按钮
+              const SizedBox(width: 12),
               SizedBox(
-                height: 40,
+                width: 72,
+                height: 32,
                 child: TextButton(
                   onPressed: () {},
                   style: TextButton.styleFrom(
-                    backgroundColor: Color(0xFFD1E7DD),
+                    backgroundColor: const Color(0xFFB7F8D3),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    minimumSize: const Size(0, 40),
+                    padding: EdgeInsets.zero,
                   ),
                   child: const Text(
                     '立即体验',
                     style: TextStyle(
-                      color: Color(0xFF1E463A),
+                      color: Color(0xFF23262F),
                       fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                 ),
               ),
+              const SizedBox(width: 12),
             ],
           ),
         ),
