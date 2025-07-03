@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'token_dashboard/token_dashboard_page.dart';
 
 class Token {
   final String symbol;
@@ -47,67 +48,71 @@ class Token {
 
 class TokenItem extends StatelessWidget {
   final Token token;
-  const TokenItem({Key? key, required this.token}) : super(key: key);
+  final VoidCallback? onTap;
+  const TokenItem({required this.token, this.onTap, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      color: Colors.transparent,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // logo
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: const Color(0xFF23262F),
-              borderRadius: BorderRadius.circular(8),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 56,
+        color: Colors.transparent,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // logo
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: const Color(0xFF23262F),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(token.logo, fit: BoxFit.cover),
+              ),
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(token.logo, fit: BoxFit.cover),
+            const SizedBox(width: 10),
+            // 名称、天数、合约
+            Expanded(
+              flex: 3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(token.symbol, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+                      const SizedBox(width: 4),
+                      Text('${token.days}d', style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 12)),
+                      const SizedBox(width: 4),
+                      Text(token.address.length > 8 ? '0x${token.address.substring(token.address.length-8)}' : token.address, style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 12)),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 10),
-          // 名称、天数、合约
-          Expanded(
-            flex: 3,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(token.symbol, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
-                    const SizedBox(width: 4),
-                    Text('${token.days}d', style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 12)),
-                    const SizedBox(width: 4),
-                    Text(token.address.length > 8 ? '0x${token.address.substring(token.address.length-8)}' : token.address, style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 12)),
-                  ],
-                ),
-              ],
+            // 持有者
+            Expanded(
+              flex: 2,
+              child: Text(token.holders, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15)),
             ),
-          ),
-          // 持有者
-          Expanded(
-            flex: 2,
-            child: Text(token.holders, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15)),
-          ),
-          // 池子
-          Expanded(
-            flex: 2,
-            child: Text(token.liquidity, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15)),
-          ),
-          // 市值
-          Expanded(
-            flex: 2,
-            child: Text(token.marketCap, style: const TextStyle(color: Color(0xFF00C2FF), fontWeight: FontWeight.w700, fontSize: 15)),
-          ),
-          // 闪电icon
-          const Icon(Icons.flash_on, color: Color(0xFF00C076), size: 18),
-        ],
+            // 池子
+            Expanded(
+              flex: 2,
+              child: Text(token.liquidity, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15)),
+            ),
+            // 市值
+            Expanded(
+              flex: 2,
+              child: Text(token.marketCap, style: const TextStyle(color: Color(0xFF00C2FF), fontWeight: FontWeight.w700, fontSize: 15)),
+            ),
+            // 闪电icon
+            const Icon(Icons.flash_on, color: Color(0xFF00C076), size: 18),
+          ],
+        ),
       ),
     );
   }
