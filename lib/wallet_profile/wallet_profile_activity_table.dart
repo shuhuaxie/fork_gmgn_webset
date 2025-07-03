@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/wallet_profile/token_share_dialog.dart';
 import 'token_detail/token_detail_page.dart';
 
 class WalletProfileActivityTable extends StatelessWidget {
@@ -96,7 +97,13 @@ class WalletProfileActivityTable extends StatelessWidget {
                   _TableCell(row['profit'] as String, color: row['type'] == '卖出' ? const Color(0xFFFF5B5B) : const Color(0xFF22C55E)),
                   _TableCell(row['time'] as String),
                   _TableCell(row['gas'] as String),
-                  _TableCellButton(label: '分享', onTap: () {}),
+                  _TableCellButton(label: '分享', 
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => const TokenShareDialog(),
+                    );
+                  }),
                 ],
               ),
             )),
