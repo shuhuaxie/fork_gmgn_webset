@@ -1,17 +1,12 @@
-# untitled1
+# 项目说明
 
-A new Flutter project.
+Flutter Web 项目模拟gmgn.ai移动网页版.
 
-## Getting Started
+## AI使用说明
 
-This project is a starting point for a Flutter application.
+- 使用截图提交到cursor生成UI代码
+- 提示cursor生成多个文件，增加可读性
+- 通过框选或者指出文件名的方式，修改特定Widget
+- 提示为每个界面元素增加间距，尺寸，颜色，文字大小，增加元素的细节
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# fork_gmgn_webset
