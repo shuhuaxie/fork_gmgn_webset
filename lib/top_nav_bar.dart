@@ -5,7 +5,8 @@ import 'wallet_menu.dart';
 class TopNavBar extends StatelessWidget {
   final VoidCallback? onLogin;
   final VoidCallback? onRegister;
-  const TopNavBar({Key? key, this.onLogin, this.onRegister}) : super(key: key);
+  final VoidCallback? onWalletProfile;
+  const TopNavBar({Key? key, this.onLogin, this.onRegister, this.onWalletProfile}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +64,9 @@ class TopNavBar extends StatelessWidget {
                     color: const Color(0xFF23262F),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.search, color: Color(0xFFB0B3BC), size: 20),
-                    onPressed: () {},
+                  child: const IconButton(
+                    icon: Icon(Icons.search, color: Color(0xFFB0B3BC), size: 20),
+                    onPressed: null,
                     padding: EdgeInsets.zero,
                     splashRadius: 20,
                   ),
@@ -79,9 +80,9 @@ class TopNavBar extends StatelessWidget {
                     color: const Color(0xFF23262F),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.settings, color: Color(0xFFB0B3BC), size: 20),
-                    onPressed: () {},
+                  child: const IconButton(
+                    icon: Icon(Icons.settings, color: Color(0xFFB0B3BC), size: 20),
+                    onPressed: null,
                     padding: EdgeInsets.zero,
                     splashRadius: 20,
                   ),
@@ -92,7 +93,7 @@ class TopNavBar extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: loggedIn
-                        ? _WalletMenuButton()
+                        ? _WalletMenuButton(onWalletProfile: onWalletProfile)
                         : Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -155,7 +156,8 @@ class TopNavBar extends StatelessWidget {
 }
 
 class _WalletMenuButton extends StatefulWidget {
-  const _WalletMenuButton({Key? key}) : super(key: key);
+  final VoidCallback? onWalletProfile;
+  const _WalletMenuButton({Key? key, this.onWalletProfile}) : super(key: key);
 
   @override
   State<_WalletMenuButton> createState() => _WalletMenuButtonState();
@@ -188,9 +190,7 @@ class _WalletMenuButtonState extends State<_WalletMenuButton> {
               child: WalletMenu(
                 onWalletTap: () {
                   _hideMenu();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('点击了我的钱包')),
-                  );
+                  if (widget.onWalletProfile != null) widget.onWalletProfile!();
                 },
               ),
             ),

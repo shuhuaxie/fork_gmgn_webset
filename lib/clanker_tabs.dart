@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ClankerTabs extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onTabSelected;
-  const ClankerTabs({Key? key, required this.selectedIndex, required this.onTabSelected}) : super(key: key);
+  const ClankerTabs({super.key, required this.selectedIndex, required this.onTabSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +15,12 @@ class ClankerTabs extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 4),
-            Icon(Icons.show_chart, color: Color(0xFF8B5CF6), size: 22),
+            const Icon(Icons.show_chart, color: Color(0xFF8B5CF6), size: 22),
             const SizedBox(width: 6),
-            Text('Clanker', style: TextStyle(color: Color(0xFF8B5CF6), fontWeight: FontWeight.w700, fontSize: 16)),
+            const Text('Clanker', style: TextStyle(color: Color(0xFF8B5CF6), fontWeight: FontWeight.w700, fontSize: 16)),
             const Icon(Icons.keyboard_arrow_down, color: Color(0xFFB0B3BC), size: 18),
             const SizedBox(width: 8),
-            Text('Virtuals', style: TextStyle(color: Color(0xFFB0B3BC), fontWeight: FontWeight.w500, fontSize: 15)),
+            const Text('Virtuals', style: TextStyle(color: Color(0xFFB0B3BC), fontWeight: FontWeight.w500, fontSize: 15)),
             const SizedBox(width: 16),
             GestureDetector(
               onTap: () => onTabSelected(0),

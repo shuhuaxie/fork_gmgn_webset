@@ -9,6 +9,7 @@ import 'mock_json.dart' as mock;
 import 'dart:convert';
 import 'token_item.dart';
 import 'register_dialog.dart';
+import 'wallet_profile/wallet_profile_page.dart';
 
 class TokenBoardPage extends StatefulWidget {
   const TokenBoardPage({super.key});
@@ -21,6 +22,7 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
   int navTabIndex = 0;
   int clankerTabIndex = 0;
   int timeTabIndex = 2;
+  bool showWalletProfile = false;
 
   late final List<Token> tokenList;
 
@@ -55,6 +57,11 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
                     builder: (context) => const RegisterDialog(),
                   );
                 },
+                onWalletProfile: () {
+                  setState(() {
+                    showWalletProfile = true;
+                  });
+                },
               ),
               const SizedBox(height: 2),
               NavTabs(
@@ -62,30 +69,36 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
                 onTabSelected: (i) => setState(() => navTabIndex = i),
               ),
               const SizedBox(height: 2),
-              ClankerTabs(
-                selectedIndex: clankerTabIndex,
-                onTabSelected: (i) => setState(() => clankerTabIndex = i),
-              ),
-              const SizedBox(height: 2),
-              TimeTabs(
-                selectedIndex: timeTabIndex,
-                onTabSelected: (i) => setState(() => timeTabIndex = i),
-              ),
-              const SizedBox(height: 2),
-              const FilterBar(),
-              const SizedBox(height: 2),
-              _buildTableHeader(),
-              const Divider(height: 1, color: Color(0xFF23262F)),
-              SizedBox(
-                height: 400, // 可根据实际内容调整
-                child: ListView.separated(
-                  itemCount: tokenList.length,
-                  separatorBuilder: (_, __) => const Divider(color: Color(0xFF23262F), height: 1),
-                  itemBuilder: (context, i) {
-                    return TokenItem(token: tokenList[i]);
-                  },
-                ),
-              ),
+              showWalletProfile
+                  ? const WalletProfilePage()
+                  : Column(
+                      children: [
+                        ClankerTabs(
+                          selectedIndex: clankerTabIndex,
+                          onTabSelected: (i) => setState(() => clankerTabIndex = i),
+                        ),
+                        const SizedBox(height: 2),
+                        TimeTabs(
+                          selectedIndex: timeTabIndex,
+                          onTabSelected: (i) => setState(() => timeTabIndex = i),
+                        ),
+                        const SizedBox(height: 2),
+                        const FilterBar(),
+                        const SizedBox(height: 2),
+                        _buildTableHeader(),
+                        const Divider(height: 1, color: Color(0xFF23262F)),
+                        SizedBox(
+                          height: 400,
+                          child: ListView.separated(
+                            itemCount: tokenList.length,
+                            separatorBuilder: (_, __) => const Divider(color: Color(0xFF23262F), height: 1),
+                            itemBuilder: (context, i) {
+                              return TokenItem(token: tokenList[i]);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
             ],
           ),
         ),
