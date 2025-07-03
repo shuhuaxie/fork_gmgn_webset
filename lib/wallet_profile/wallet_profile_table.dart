@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'token_share_dialog.dart';
 
 class WalletProfileTable extends StatelessWidget {
   const WalletProfileTable({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class WalletProfileTable extends StatelessWidget {
       '总买入/平均',
       '总卖出/平均',
       '30D交易数',
-      '操作',
+      '',
     ];
 
     return Container(
@@ -107,7 +108,15 @@ class WalletProfileTable extends StatelessWidget {
                       _TableCell('\$0'),
                       _TableCell('\$0'),
                       _TableCell('0/0'),
-                      _TableCell('分享'),
+                      _TableCellButton(
+                        label: '分享',
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const TokenShareDialog(),
+                          );
+                        },
+                      ),
                     ],
                   )),
                 ],
@@ -191,6 +200,32 @@ class _TableCell extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(color: color ?? const Color(0xFFB0B3BC), fontSize: 14, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+}
+
+// 新增操作按钮单元格
+class _TableCellButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _TableCellButton({required this.label, required this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      height: 48,
+      child: TextButton(
+        onPressed: onTap,
+        style: TextButton.styleFrom(
+          backgroundColor: const Color(0xFF23262F),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(color: Color(0xFFB0B3BC), fontSize: 14, fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }
