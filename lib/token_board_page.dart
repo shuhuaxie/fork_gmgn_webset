@@ -70,7 +70,7 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
               ),
               const SizedBox(height: 2),
               showWalletProfile
-                  ? const WalletProfilePage()
+                  ? Expanded(child: WalletProfilePage())
                   : Column(
                       children: [
                         ClankerTabs(
