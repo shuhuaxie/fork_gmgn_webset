@@ -6,7 +6,7 @@ class WalletProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 390,
+      width: MediaQuery.of(context).size.width,
       height: 80,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(

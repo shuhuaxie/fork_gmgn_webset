@@ -56,7 +56,7 @@ class WalletProfileTable extends StatelessWidget {
     ];
 
     return Container(
-      width: 390,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: const Color(0xFF23262F),
         borderRadius: BorderRadius.circular(16),

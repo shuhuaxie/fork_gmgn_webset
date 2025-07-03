@@ -11,7 +11,7 @@ class RecentTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabs = ['最近盈亏', '持有代币', '活动', '部署代币'];
     return Container(
-      width: 390,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: Row(
         children: List.generate(tabs.length, (i) =>

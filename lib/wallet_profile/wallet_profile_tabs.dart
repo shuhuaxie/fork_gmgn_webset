@@ -8,7 +8,7 @@ class WalletProfileTabs extends StatelessWidget {
     return 
         // 原有主Tab和时间Tab
         Container(
-          width: 390,
+          width: MediaQuery.of(context).size.width,
           height: 36,
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(

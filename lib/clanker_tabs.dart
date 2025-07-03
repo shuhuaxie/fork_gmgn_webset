@@ -9,7 +9,7 @@ class ClankerTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 390,
+        width: MediaQuery.of(context).size.width,
         height: 44,
         color: const Color(0xFF181A20),
         child: Row(

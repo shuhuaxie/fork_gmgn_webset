@@ -58,7 +58,7 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
       backgroundColor: const Color(0xFF181A20),
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 390),
+          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
           child: Column(
             children: [
               _buildTopBar(),
@@ -134,7 +134,7 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
       color: const Color(0xFF23262F),
       child: Center(
         child: Container(
-          width: 390,
+          width: MediaQuery.of(context).size.width,
           height: 68,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,

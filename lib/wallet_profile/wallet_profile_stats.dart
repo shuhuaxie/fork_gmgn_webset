@@ -6,7 +6,7 @@ class WalletProfileStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 390,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
       decoration: BoxDecoration(
         color: const Color(0xFF23262F),
