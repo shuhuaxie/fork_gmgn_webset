@@ -168,21 +168,34 @@ class _WalletMenuButtonState extends State<_WalletMenuButton> {
 
   void _showMenu() {
     _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        width: 280,
-        child: CompositedTransformFollower(
-          link: _layerLink,
-          showWhenUnlinked: false,
-          offset: const Offset(-180, 56),
-          child: WalletMenu(
-            onWalletTap: () {
-              _hideMenu();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('点击了我的钱包')),
-              );
-            },
+      builder: (context) => Stack(
+        children: [
+          // 全屏透明遮罩
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _hideMenu,
+              behavior: HitTestBehavior.translucent,
+              child: Container(color: Colors.transparent),
+            ),
           ),
-        ),
+          // WalletMenu浮层
+          Positioned(
+            width: 280,
+            child: CompositedTransformFollower(
+              link: _layerLink,
+              showWhenUnlinked: false,
+              offset: const Offset(-180, 56),
+              child: WalletMenu(
+                onWalletTap: () {
+                  _hideMenu();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('点击了我的钱包')),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
     Overlay.of(context, rootOverlay: true).insert(_overlayEntry!);
