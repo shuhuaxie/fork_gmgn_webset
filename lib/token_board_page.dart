@@ -3,6 +3,7 @@ import 'nav_tabs.dart';
 import 'clanker_tabs.dart';
 import 'time_tabs.dart';
 import 'filter_bar.dart';
+import 'top_nav_bar.dart';
 
 class TokenBoardPage extends StatefulWidget {
   const TokenBoardPage({Key? key}) : super(key: key);
@@ -62,6 +63,8 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
           child: Column(
             children: [
               _buildTopBar(),
+              const SizedBox(height: 2),
+              TopNavBar(),
               const SizedBox(height: 2),
               NavTabs(
                 selectedIndex: navTabIndex,
