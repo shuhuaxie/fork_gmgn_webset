@@ -74,7 +74,15 @@ class _TokenBoardPageState extends State<TokenBoardPage> {
               if (mainContentType == 0)
                 Expanded(child: WalletProfilePage())
               else if (mainContentType == 1)
-                Expanded(child: TokenDashboardPage())
+                Expanded(
+                  child: TokenDashboardPage(
+                    onShowWalletProfile: () {
+                      setState(() {
+                        mainContentType = 0;
+                      });
+                    },
+                  ),
+                )
               else
                 Expanded(
                   child: TokenListPage(

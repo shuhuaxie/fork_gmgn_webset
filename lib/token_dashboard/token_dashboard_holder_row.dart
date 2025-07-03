@@ -8,7 +8,16 @@ class TokenDashboardHolderRow extends StatelessWidget {
   final String amount;
   final String eth;
   final String time;
-  const TokenDashboardHolderRow({required this.rank, required this.address, required this.percent, required this.amount, required this.eth, required this.time});
+  final VoidCallback? onAddressTap;
+  const TokenDashboardHolderRow({
+    required this.rank,
+    required this.address,
+    required this.percent,
+    required this.amount,
+    required this.eth,
+    required this.time,
+    this.onAddressTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +37,10 @@ class TokenDashboardHolderRow extends StatelessWidget {
           const SizedBox(width: 4),
           SizedBox(
             width: 100,
-            child: Text(address, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15)),
+            child: GestureDetector(
+              onTap: onAddressTap,
+              child: Text(address, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15, decoration: TextDecoration.underline)),
+            ),
           ),
           const SizedBox(width: 4),
           Row(

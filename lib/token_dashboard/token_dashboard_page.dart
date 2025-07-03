@@ -10,7 +10,8 @@ import 'token_dashboard_holder_list.dart';
 import 'token_dashboard_bottom_nav.dart';
 
 class TokenDashboardPage extends StatefulWidget {
-  const TokenDashboardPage({super.key});
+  final void Function()? onShowWalletProfile;
+  const TokenDashboardPage({super.key, this.onShowWalletProfile});
 
   @override
   State<TokenDashboardPage> createState() => _TokenDashboardPageState();
@@ -64,11 +65,19 @@ class _TokenDashboardPageState extends State<TokenDashboardPage> {
               // 统计区
               TokenDashboardStats(),
               // 分组tab
-              TokenDashboardGroupTabs(selectedIndex: groupTabIndex, onTabChanged: (i) => setState(() => groupTabIndex = i)),
+              TokenDashboardGroupTabs(
+                selectedIndex: groupTabIndex,
+                onTabChanged: (i) => setState(() => groupTabIndex = i),
+              ),
               // 持有人表头
               TokenDashboardHolderTableHeader(),
               // 持有人表
-              TokenDashboardHolderList(data: holderDataSets[groupTabIndex]),
+              TokenDashboardHolderList(
+                data: holderDataSets[groupTabIndex],
+                onAddressTap: (_) {
+                  if (widget.onShowWalletProfile != null) widget.onShowWalletProfile!();
+                },
+              ),
               SizedBox(height: 80), // 给底部按钮留空间
             ],
           ),
