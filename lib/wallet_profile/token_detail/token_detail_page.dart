@@ -15,7 +15,7 @@ class TokenDetailPage extends StatelessWidget {
       backgroundColor: const Color(0xFF181A20),
       body: Center(
         child: Container(
-          width: 390,// 页面总宽度
+          width: MediaQuery.of(context).size.width,// 页面总宽度
           margin: const EdgeInsets.symmetric(vertical: 24),
           padding: const EdgeInsets.all(0),
           decoration: BoxDecoration(

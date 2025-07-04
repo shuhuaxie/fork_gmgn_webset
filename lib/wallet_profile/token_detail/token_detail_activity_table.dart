@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'token_detail_activity_table_header.dart';
+import 'token_detail_activity_table_row.dart';
 
 /// 明细表区（宽520，背景#23262F，圆角16，表头高40，行高48，横向可滚动）
 class TokenDetailActivityTable extends StatelessWidget {
@@ -6,37 +8,20 @@ class TokenDetailActivityTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final columns = ['类型', '总额 USD', '数量', '价格与', 'Gas费用'];
-    final rows = [
-      {'type': '转出', 'typeColor': Color(0xFFB26AFF), 'amount': '--', 'qty': '454.11', 'price': '--', 'gas': '--'},
-      {'type': '买入', 'typeColor': Color(0xFF22C55E), 'amount': '\$0.012', 'qty': '45.41K', 'price': '\$0.625963', 'gas': '\$0.003'},
-      {'type': '卖出', 'typeColor': Color(0xFFFF5B5B), 'amount': '\$0.852', 'qty': '3.5M', 'price': '\$0.624043', 'gas': '\$0.001'},
-      {'type': '转出', 'typeColor': Color(0xFFB26AFF), 'amount': '--', 'qty': '23.83K', 'price': '--', 'gas': '--'},
-      {'type': '买入', 'typeColor': Color(0xFF22C55E), 'amount': '\$0.585', 'qty': '2.4M', 'price': '\$0.624560', 'gas': '\$0.002'},
-    ];
     return Container(
-      width: 520,
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF23262F),
-        borderRadius: BorderRadius.circular(16),
+        color: const Color(0xFF181A20),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Column(
-          children: [
-            // 表头
-            Row(
-              children: List.generate(columns.length, (i) => _TableHeaderCell(columns[i], isFirst: i == 0)),
-            ),
-            Container(
-              height: 1,
-              width: columns.length * 120,
-              color: const Color(0xFF23262F),
-            ),
-            // 数据行
-            ...rows.map((row) => _TokenDetailTableRow(row: row)).toList(),
-          ],
-        ),
+      child: Column(
+        children: [
+          const TokenDetailActivityTableHeader(),
+          // mock多行
+          const TokenDetailActivityTableRow(isSell: true, total: '\$1,350.72', usd: '12.79K', amount: '12.79K', price: '\$0.10556', gas: '\$0.032'),
+          const TokenDetailActivityTableRow(isSell: false, total: '\$2,000.00', usd: '20.00K', amount: '20.00K', price: '\$0.12000', gas: '\$0.040'),
+          const TokenDetailActivityTableRow(isSell: true, total: '\$800.00', usd: '8.00K', amount: '8.00K', price: '\$0.10000', gas: '\$0.025'),
+        ],
       ),
     );
   }
