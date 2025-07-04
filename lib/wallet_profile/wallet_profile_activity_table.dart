@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/wallet_profile/token_share_dialog.dart';
-import 'token_detail/token_detail_page.dart';
+import '../token_detail/token_detail_page.dart';
 
 class WalletProfileActivityTable extends StatelessWidget {
   const WalletProfileActivityTable({Key? key}) : super(key: key);
