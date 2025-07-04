@@ -8,6 +8,10 @@ import 'token_dashboard_group_tabs.dart';
 import 'token_dashboard_holder_table_header.dart';
 import 'token_dashboard_holder_list.dart';
 import 'token_dashboard_bottom_nav.dart';
+import 'token_dashboard_timeframe_tabs.dart';
+import 'token_dashboard_chart_info_row.dart';
+import 'token_dashboard_chart_header.dart';
+import 'token_dashboard_chart_time_tabs.dart';
 
 class TokenDashboardPage extends StatefulWidget {
   final void Function()? onShowWalletProfile;
@@ -19,6 +23,7 @@ class TokenDashboardPage extends StatefulWidget {
 
 class _TokenDashboardPageState extends State<TokenDashboardPage> {
   int groupTabIndex = 0;
+  int timeframeTabIndex = 6;
 
   static const List<List<TokenDashboardHolderRowData>> holderDataSets = [
     [
@@ -56,14 +61,28 @@ class _TokenDashboardPageState extends State<TokenDashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              
+              // K线图标题
+              const TokenDashboardChartHeader(),
+              const TokenDashboardChartInfoRow(),
+              // K线图时间tab
+              const TokenDashboardChartTimeTabs(),
+              // 时间区间tab
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: TokenDashboardTimeframeTabs(
+                  selectedIndex: timeframeTabIndex,
+                  onTabSelected: (i) => setState(() => timeframeTabIndex = i),
+                ),
+              ),
               // 主K线区
               TokenDashboardChart(),
+
               // 持有者tab
               TokenDashboardHolderTabs(),
               // 顶部统计行
               TokenDashboardTopStats(),
-              // 统计区
-              TokenDashboardStats(),
+              
               // 分组tab
               TokenDashboardGroupTabs(
                 selectedIndex: groupTabIndex,
